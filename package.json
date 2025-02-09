@@ -30,7 +30,8 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
     "command-exists": "^1.2.9",
-    "execa": "^9.5.2"
+    "execa": "^9.5.2",
+    "zod-to-json-schema": "^3.24.1"
   },
   "devDependencies": {
     "@types/command-exists": "^1.2.3",

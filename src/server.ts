@@ -5,6 +5,7 @@ import { Architect } from './tools/architect.js';
 import { Container } from './container.js';
 import { DataProcessor } from './interfaces/tool.js';
 import { createRequire } from 'module';
+import { zodToJsonSchema } from 'zod-to-json-schema';
 const require = createRequire(import.meta.url);
 const { version } = require('../package.json');
 
@@ -23,7 +24,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
     return {
       name: metadata.name,
       description: metadata.description,
-      inputSchema: metadata.schema,
+      inputSchema: zodToJsonSchema(metadata.schema),
     };
   }),
 }));
