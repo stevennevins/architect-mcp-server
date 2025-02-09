@@ -47,5 +47,5 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 export async function startServer() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.log("MCP server started");
+  // console.log("MCP server started");
 }

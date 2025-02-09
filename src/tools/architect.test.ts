@@ -29,12 +29,9 @@ describe('architect', () => {
     it('should execute command and clean input', async () => {
         // First make a call to get a valid conversation ID
         const firstCall = await client.callTool('architect', { input: 'initial message' });
-        console.log(firstCall);
         const response = JSON.parse(firstCall.content[0].text);
-        const conversationId = response.conversationId;
-        expect(response.text).toBeTruthy();
-        console.log(conversationId);
-        expect(conversationId).not.toBeNull();
+        expect(response.response).toBeTruthy();
+        expect(response.conversationId).toBeTruthy();
     });
 
     it('should use provided conversation ID', async () => {
@@ -43,11 +40,8 @@ describe('architect', () => {
         const firstResponse = JSON.parse(firstCall.content[0].text);
         const conversationId = firstResponse.conversationId;
 
-        console.log(firstResponse)
-
-        expect(firstResponse.text).toBeTruthy();
+        expect(firstResponse.response).toBeTruthy();
         expect(conversationId).toBeTruthy();
-        console.log('First conversation ID:', conversationId);
 
         // Use that conversation ID in a subsequent call
         const secondCall = await client.callTool('architect', {
@@ -56,9 +50,7 @@ describe('architect', () => {
         });
 
         const secondResponse = JSON.parse(secondCall.content[0].text);
-        console.log('Second response:', secondResponse);
-
-        expect(secondResponse.text).toBeTruthy();
+        expect(secondResponse.response).toBeTruthy();
         expect(secondResponse.conversationId).toBe(conversationId);
     }, { timeout: 10000 });
 

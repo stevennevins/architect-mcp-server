@@ -38,16 +38,12 @@ export class Architect implements DataProcessor {
     }
 
     private async getLatestConversationId(): Promise<string> {
-        console.log('Getting latest conversation ID');
         const output = await this.executeCommand(['logs', '--current', '--json']);
         const logs = JSON.parse(output);
-        console.log('Parsed logs:', logs);
-
         if (!Array.isArray(logs) || logs.length === 0 || !logs[0]?.id) {
             throw new Error('No valid conversation ID found in logs');
         }
 
-        console.log('Found conversation ID:', logs[0].conversation_id);
         return logs[0].conversation_id;
     }
 
@@ -62,16 +58,11 @@ export class Architect implements DataProcessor {
 
         try {
             if (conversationId) {
-                // For continued conversations, send the input with the conversation ID
                 const response = await this.executeCommand(['prompt', '--conversation', conversationId, '--no-stream'], cleanedInput);
-                console.log('Continued conversation response:', response);
                 return { conversationId, response };
             } else {
-                // For new conversations, first send the input
                 const response = await this.executeCommand(['prompt', '--no-stream'], cleanedInput);
-                // Then get the conversation ID from the current conversation
                 const newConversationId = await this.getLatestConversationId();
-                console.log('New conversation created:', { response, newConversationId });
                 return { conversationId: newConversationId, response };
             }
         } catch (error) {
@@ -89,8 +80,6 @@ export class Architect implements DataProcessor {
     }
 
     async processInput(input: unknown): Promise<string> {
-        console.log('Processing input:', input);
-
         if (!(await commandExists('llm'))) {
             throw new Error('LLM command not found. Please ensure it is installed and in your PATH.');
         }
@@ -99,11 +88,8 @@ export class Architect implements DataProcessor {
 
         try {
             const result = await this.handleConversation(parsed.input, parsed.conversationId);
-            console.log('Process result:', result);
-
             return JSON.stringify({
-                type: "text",
-                text: result.response,
+                response: result.response,
                 conversationId: result.conversationId
             });
         } catch (error) {
