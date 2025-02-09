@@ -1,4 +1,5 @@
 # MCP Server Template
+
 [![smithery badge](https://smithery.ai/badge/@stevennevins/mcp-server-template)](https://smithery.ai/server/@stevennevins/mcp-server-template)
 
 A template for creating Model Context Protocol (MCP) servers in TypeScript. This template provides a solid foundation for building MCP-compatible servers with proper tooling, type safety, and best practices.
@@ -12,6 +13,22 @@ A template for creating Model Context Protocol (MCP) servers in TypeScript. This
 - 🧪 Vitest testing framework
 - 📝 Type definitions
 - 🔌 MCP SDK integration
+
+## Prerequisites
+
+### LLM CLI Installation
+
+This project requires the LLM CLI to be installed. You can install it using Homebrew:
+
+```bash
+brew install llm
+```
+
+After installation, ensure the `llm` command is available in your PATH by running:
+
+```bash
+llm --version
+```
 
 ## Getting Started
 
@@ -105,6 +122,47 @@ The server will automatically:
 - Handle input validation
 - Process requests to your tool
 - Format responses according to the MCP protocol
+
+## Architect Tool
+
+The Architect tool (`src/tools/architect.ts`) provides an interface to interact with the LLM CLI for architectural design feedback. It maintains conversation context and handles the communication between your application and the LLM CLI.
+
+### Features
+
+- Maintains conversation context across multiple interactions
+- Handles command execution through the LLM CLI
+- Provides error handling and logging
+- Supports both new conversations and continued discussions
+
+### Usage
+
+The Architect tool accepts POST requests to `/llm-architect/chat` with the following payload:
+
+```json
+{
+  "input": "Your architectural question or prompt",
+  "conversationId": "optional-conversation-id"
+}
+```
+
+Example response:
+
+```json
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "LLM's response",
+      "conversationId": "conversation-id"
+    }
+  ]
+}
+```
+
+### Requirements
+
+- The LLM CLI must be installed and available in your PATH (see Prerequisites section)
+- Environment variables should be properly configured for the LLM CLI
 
 ## Testing
 
