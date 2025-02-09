@@ -189,3 +189,39 @@ The template uses a simple dependency injection container that:
 - Provides easy registration of new tools
 - Handles tool retrieval by name
 - Ensures single instance per tool
+
+## Troubleshooting
+
+### Using MCP Inspector
+
+The MCP Inspector is a helpful tool for debugging and inspecting your MCP server. To use it:
+
+1. First, build your project:
+
+   ```bash
+   npm run build
+   ```
+
+2. Run the inspector:
+   ```bash
+   npx @modelcontextprotocol/inspector node dist/index.js
+   ```
+
+The inspector provides a web interface that allows you to:
+
+- View all available tools and their schemas
+- Test tool calls interactively
+- Inspect request/response payloads
+- Debug communication issues between your server and clients
+
+Common issues and solutions:
+
+- If you see "Connection refused", ensure your server is running and listening on the correct port
+- If tools aren't showing up, verify they're properly registered in the container
+- For schema validation errors, check that your tool's input/output matches the declared schema
+
+For more detailed debugging, you can run the server with debug logs:
+
+```bash
+DEBUG=mcp* node dist/index.js
+```
