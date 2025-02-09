@@ -102,11 +102,9 @@ export class Architect implements DataProcessor {
             console.log('Process result:', result);
 
             return JSON.stringify({
-                content: [{
-                    type: "text",
-                    text: result.response,
-                    conversationId: result.conversationId
-                }]
+                type: "text",
+                text: result.response,
+                conversationId: result.conversationId
             });
         } catch (error) {
             console.error('Process error:', error);

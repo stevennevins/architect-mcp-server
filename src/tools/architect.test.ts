@@ -29,9 +29,10 @@ describe('architect', () => {
     it('should execute command and clean input', async () => {
         // First make a call to get a valid conversation ID
         const firstCall = await client.callTool('architect', { input: 'initial message' });
+        console.log(firstCall);
         const response = JSON.parse(firstCall.content[0].text);
-        const conversationId = response.content[0].conversationId;
-        expect(response.content[0].text).toBeTruthy();
+        const conversationId = response.conversationId;
+        expect(response.text).toBeTruthy();
         console.log(conversationId);
         expect(conversationId).not.toBeNull();
     });
@@ -40,11 +41,11 @@ describe('architect', () => {
         // First make a call to get a valid conversation ID
         const firstCall = await client.callTool('architect', { input: 'initial message' });
         const firstResponse = JSON.parse(firstCall.content[0].text);
-        const conversationId = firstResponse.content[0].conversationId;
+        const conversationId = firstResponse.conversationId;
 
         console.log(firstResponse)
 
-        expect(firstResponse.content[0].text).toBeTruthy();
+        expect(firstResponse.text).toBeTruthy();
         expect(conversationId).toBeTruthy();
         console.log('First conversation ID:', conversationId);
 
@@ -57,8 +58,8 @@ describe('architect', () => {
         const secondResponse = JSON.parse(secondCall.content[0].text);
         console.log('Second response:', secondResponse);
 
-        expect(secondResponse.content[0].text).toBeTruthy();
-        expect(secondResponse.content[0].conversationId).toBe(conversationId);
+        expect(secondResponse.text).toBeTruthy();
+        expect(secondResponse.conversationId).toBe(conversationId);
     }, { timeout: 10000 });
 
     it('should handle invalid conversation IDs', async () => {
