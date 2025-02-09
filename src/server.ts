@@ -1,7 +1,7 @@
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { CallToolRequestSchema, ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
-import { Example } from './tools/example.js';
+import { Architect } from './tools/architect.js';
 import { Container } from './container.js';
 import { DataProcessor } from './interfaces/tool.js';
 import { createRequire } from 'module';
@@ -9,7 +9,7 @@ const require = createRequire(import.meta.url);
 const { version } = require('../package.json');
 
 const container = new Container();
-container.register(new Example());
+container.register(new Architect());
 
 const server = new Server(
   { name: "mcp-server", version },
@@ -23,16 +23,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
     return {
       name: metadata.name,
       description: metadata.description,
-      inputSchema: {
-        type: "object",
-        properties: {
-          input: {
-            type: "string",
-            description: "The input data to process",
-          },
-        },
-        required: ["input"],
-      },
+      inputSchema: metadata.schema,
     };
   }),
 }));
