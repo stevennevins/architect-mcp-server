@@ -4,6 +4,8 @@
 
 A template for creating Model Context Protocol (MCP) servers in TypeScript. This template provides a solid foundation for building MCP-compatible servers with proper tooling, type safety, and best practices.
 
+<a href="https://glama.ai/mcp/servers/g0qi4yvl33"><img width="380" height="200" src="https://glama.ai/mcp/servers/g0qi4yvl33/badge" alt="Server Template MCP server" /></a>
+
 ## Features
 
 - 🚀 Full TypeScript support
