@@ -4,6 +4,7 @@ import { ToolHandlers } from '../utils/types.js'
 import z from 'zod'
 import { execa } from 'execa'
 import commandExists from 'command-exists'
+import { ToolResult } from '../utils/TestClient.js'
 
 // Define input validation schema using zod
 const architectInputSchema = z.object({
@@ -36,15 +37,6 @@ const ARCHITECT_TOOL: Tool = {
 // Export tools
 export const ARCHITECT_TOOLS = [ARCHITECT_TOOL];
 
-// Add a proper interface for the architect tool response
-export interface ArchitectToolResponse {
-    toolResult: {
-        content: { type: string, text: string }[];
-    };
-    [key: string]: unknown;
-}
-
-// Helper function to execute a command using execa
 async function executeCommand(args: string[], input?: string): Promise<string> {
     log('Executing command', { args, input });
     try {
@@ -103,7 +95,7 @@ async function handleArchitectProcess(input: string, conversationId?: string): P
 
 // Export handlers
 export const ARCHITECT_HANDLERS: ToolHandlers = {
-    'architect': async (request): Promise<ArchitectToolResponse> => {
+    'architect': async (request): Promise<ToolResult> => {
         try {
             const { input, conversationId } = request.params.arguments as { input: string, conversationId?: string };
             // Validate input using zod

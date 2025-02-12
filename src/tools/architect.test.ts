@@ -20,7 +20,7 @@ describe('architect', () => {
     });
 
     it('should process valid input', async () => {
-        const result = (await client.callTool('architect', { input: 'test prompt' })) as ArchitectToolResponse;
+        const result = await client.callTool('architect', { input: 'test prompt' });
         expect(result.toolResult.content[0]).toEqual({
             type: 'text',
             text: expect.any(String)
