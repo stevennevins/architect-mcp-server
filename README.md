@@ -1,5 +1,7 @@
 # MCP Server Template
 
+[![smithery badge](https://smithery.ai/badge/@stevennevins/architect-mcp-server)](https://smithery.ai/server/@stevennevins/architect-mcp-server)
+
 ## Prerequisites
 
 ### LLM CLI Installation
