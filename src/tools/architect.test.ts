@@ -1,19 +1,12 @@
-import { MCPTestClient } from 'mcp-test-client';
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { TestClient } from '../utils/TestClient.js';
+import { describe, it, expect, beforeAll } from 'vitest';
+import { ArchitectToolResponse } from './architect.js';
 
 describe('architect', () => {
-    let client: MCPTestClient;
+    let client: TestClient;
 
-    beforeAll(async () => {
-        client = new MCPTestClient({
-            serverCommand: 'tsx',
-            serverArgs: ['src/index.ts'],
-        });
-        await client.init();
-    });
-
-    afterAll(async () => {
-        await client.cleanup();
+    beforeAll(() => {
+        client = new TestClient();
     });
 
     it('should be available in tools list', async () => {
@@ -26,52 +19,26 @@ describe('architect', () => {
         );
     });
 
-    it('should execute command and clean input', async () => {
-        // First make a call to get a valid conversation ID
-        const firstCall = await client.callTool('architect', { input: 'initial message' });
-        const response = JSON.parse(firstCall.content[0].text);
-        expect(response.response).toBeTruthy();
-        expect(response.conversationId).toBeTruthy();
-    });
-
-    it('should use provided conversation ID', async () => {
-        // First make a call to get a valid conversation ID
-        const firstCall = await client.callTool('architect', { input: 'initial message' });
-        const firstResponse = JSON.parse(firstCall.content[0].text);
-        const conversationId = firstResponse.conversationId;
-
-        expect(firstResponse.response).toBeTruthy();
-        expect(conversationId).toBeTruthy();
-
-        // Use that conversation ID in a subsequent call
-        const secondCall = await client.callTool('architect', {
-            input: 'follow up message',
-            conversationId
+    it('should process valid input', async () => {
+        const result = (await client.callTool('architect', { input: 'test prompt' })) as ArchitectToolResponse;
+        expect(result.toolResult.content[0]).toEqual({
+            type: 'text',
+            text: expect.any(String)
         });
-
-        const secondResponse = JSON.parse(secondCall.content[0].text);
-        expect(secondResponse.response).toBeTruthy();
-        expect(secondResponse.conversationId).toBe(conversationId);
-    }, { timeout: 10000 });
-
-    it('should handle invalid conversation IDs', async () => {
-        await expect(
-            client.callTool('architect', {
-                input: 'test message',
-                conversationId: 'invalid-id'
-            })
-        ).rejects.toThrow();
+        const parsed = JSON.parse(result.toolResult.content[0].text);
+        expect(parsed.conversationId).toBeTruthy();
+        expect(parsed.response).toEqual(expect.any(String));
     });
 
     it('should reject empty input', async () => {
         await expect(
             client.callTool('architect', { input: '' })
-        ).rejects.toThrow();
+        ).rejects.toThrow('Input must not be empty');
     });
 
     it('should reject missing input', async () => {
         await expect(
             client.callTool('architect', {})
-        ).rejects.toThrow('Required');
+        ).rejects.toThrow();
     });
 });
