@@ -61,31 +61,6 @@ The Architect tool (`src/tools/architect.ts`) provides an interface to interact 
 - Provides error handling and logging
 - Supports both new conversations and continued discussions
 
-### Usage
-
-The Architect tool accepts POST requests to `/llm-architect/chat` with the following payload:
-
-```json
-{
-  "input": "Your architectural question or prompt",
-  "conversationId": "optional-conversation-id"
-}
-```
-
-Example response:
-
-```json
-{
-  "content": [
-    {
-      "type": "text",
-      "text": "LLM's response",
-      "conversationId": "conversation-id"
-    }
-  ]
-}
-```
-
 ### Requirements
 
 - The LLM CLI must be installed and available in your PATH (see Prerequisites section)
